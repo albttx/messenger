@@ -87,6 +87,13 @@ type Response struct {
 	to    Recipient
 }
 
+func NewResponse(token string, to Recipient) Response {
+	return Response{
+		token: token,
+		to:    to,
+	}
+}
+
 // SetToken is for using DispatchMessage from outside.
 func (r *Response) SetToken(token string) {
 	r.token = token
