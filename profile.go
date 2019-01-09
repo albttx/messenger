@@ -2,6 +2,7 @@ package messenger
 
 // Profile is the public information of a Facebook user
 type Profile struct {
+	ID            string  `json:"ID"`
 	Name          string  `json:"name"`
 	FirstName     string  `json:"first_name"`
 	LastName      string  `json:"last_name"`
