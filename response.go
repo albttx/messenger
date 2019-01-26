@@ -302,6 +302,35 @@ func (r *Response) SenderAction(action string) error {
 }
 
 // DispatchMessage posts the message to messenger, return the error if there's any
+func (r *Response) DispatchMessageWithResponse(m interface{}) ([]byte, error) {
+	data, err := json.Marshal(m)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	req, err := http.NewRequest("POST", SendMessageURL, bytes.NewBuffer(data))
+	if err != nil {
+		return []byte{}, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.URL.RawQuery = "access_token=" + r.token
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return []byte{}, err
+	}
+	defer resp.Body.Close()
+	if err := checkFacebookError(resp.Body); err != nil {
+		return []byte{}, err
+	}
+	if resp.StatusCode != 200 {
+		return []byte{}, fmt.Errorf("fb request: failed with status code %v", resp.StatusCode)
+	}
+	return ioutil.ReadAll(resp.Body)
+}
+
+// DispatchMessage posts the message to messenger, return the error if there's any
 func (r *Response) DispatchMessage(m interface{}) error {
 	data, err := json.Marshal(m)
 	if err != nil {
