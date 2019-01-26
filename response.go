@@ -442,3 +442,8 @@ type SendSenderAction struct {
 	Recipient    Recipient `json:"recipient"`
 	SenderAction string    `json:"sender_action"`
 }
+
+type LocationMessageResponse struct {
+	RecipientID string `json:"recipient_id"`
+	MessageID   string `json:"message_id"`
+}
